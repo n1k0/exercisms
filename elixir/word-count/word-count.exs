@@ -12,7 +12,7 @@ defmodule Words do
   end
 
   defp frequencies(words) do
-    Enum.reduce(words, HashDict.new(), update_frequency(&1, &2))
+    Enum.reduce(words, HashDict.new(), &update_frequency/2)
   end
 
   defp update_frequency(word, counter) do
