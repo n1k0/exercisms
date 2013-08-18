@@ -1,24 +1,33 @@
 class Anagram
   def initialize(word)
-    @original = word
-    @fingerprint = fingerprint(word)
+    @word = Word.new word
   end
 
   def match(words)
-    words.select { |word| anagram?(word) }
+    words.select { |candidate| @word.anagram?(Word.new candidate) }
   end
 
   private
 
-  def anagram?(word)
-    different?(word, @original) && fingerprint(word) == @fingerprint
-  end
+  class Word
+    def initialize(word)
+      @original = word
+    end
 
-  def different?(word1, word2)
-    word1.downcase != word2.downcase
-  end
+    def normalized
+      @original.downcase
+    end
 
-  def fingerprint(word)
-    word.downcase.chars.sort
+    def fingerprint
+      @original.downcase.chars.sort
+    end
+
+    def different?(candidate)
+      normalized != candidate.normalized
+    end
+
+    def anagram?(candidate)
+      different?(candidate) && candidate.fingerprint == fingerprint
+    end
   end
 end
