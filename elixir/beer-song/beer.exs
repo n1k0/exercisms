@@ -1,6 +1,5 @@
 defmodule Beer do
   def verse(0),    do: verse(0, 99)
-  def verse(1),    do: verse(1, 0)
   def verse(n),    do: verse(n, n - 1)
   def verse(n, r), do: render(n, r)
 
