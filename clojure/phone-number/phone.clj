@@ -8,7 +8,7 @@
   (let [length (count n)]
     (cond (= 10 length) n
           (and (= 11 length) (= (first n) \1)) (subs n 1)
-          :else (apply str (repeat 10 \0)))))
+          :else "0000000000")))
 
 (defn number [n]
   (->> n clean validate))
