@@ -1,28 +1,23 @@
 (ns dna)
 
+(def ^:private nucleotides {:dna "CGAT"
+                            :rna "CGAU"
+                            :all "CGATU"})
+
+(defn- strseq [seq] (map str seq))
+
 (defn- default-hash-map [default keys]
-  (into {} (map #(hash-map % default) (seq keys))))
-
-(defn- error [message]
-  (throw (Exception. (str message))))
-
-(defn- nucleotides
-  ([]     (nucleotides :all))
-  ([type] (map str (cond
-            (= type :dna) "CGAT"
-            (= type :rna) "CGAU"
-            (= type :all) "CGATU"
-            :else         (error "Unsupported type.")))))
+  (apply hash-map (interleave keys (repeat default))))
 
 (defn- valid-nucleotide?
   ([n]      (valid-nucleotide? n :all))
-  ([n type] (some #(= n %) (nucleotides type))))
+  ([n type] (some #(= n %) (strseq (type nucleotides)))))
 
 (defn nucleotide-counts [sequence]
-  (merge (default-hash-map 0 (nucleotides :dna))
-         (frequencies (map str sequence))))
+  (merge (default-hash-map 0 (strseq (:dna nucleotides)))
+         (frequencies (strseq sequence))))
 
-(defn count [nucleotide sequence]
-  (if (not (valid-nucleotide? nucleotide :all))
-    (error (format "invalid nucleotide %s" nucleotide))
-    (get (nucleotide-counts sequence) nucleotide 0)))
+(defn count [n sequence]
+  (if (not (valid-nucleotide? n :all))
+    (throw (Exception. (format "invalid nucleotide %s" n)))
+    (get (nucleotide-counts sequence) n 0)))
