@@ -3,8 +3,9 @@ module.exports = function School() {
     db: {},
 
     add: function(name, grade) {
-      this.db[grade] = grade in this.db ? this.db[grade] : [];
-      this.db[grade].push(name);
+      var current = this.grade(grade);
+      current.push(name);
+      this.db[grade] = current;
     },
 
     grade: function(grade) {
