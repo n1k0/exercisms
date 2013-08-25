@@ -1,18 +1,16 @@
-from collections import Counter
-
 class DNA(object):
-  NUCLEOTIDES = {"dna": "CGAT",
-                 "rna": "CGAU",
-                 "all": "CGATU"}
+  class Nucleotides(object):
+    DNA = set("GCAT")
+    RNA = set("GCAU")
+    ALL = DNA | RNA
 
   def __init__(self, source):
-    self._counts = dict(zip(self.NUCLEOTIDES["dna"], [0, 0, 0, 0]))
-    self._counts.update(Counter(source))
+    self._source = source
 
-  def count(self, n, ntype="all"):
-    if not n in self.NUCLEOTIDES[ntype]:
+  def count(self, n):
+    if not n in self.Nucleotides.ALL:
       raise ValueError("%s is not a nucleotide." % n)
-    return self._counts[n] if n in self._counts else 0
+    return len([x for x in self._source if x == n])
 
   def nucleotide_counts(self):
-    return self._counts
+    return {n: self.count(n) for n in self.Nucleotides.DNA}
