@@ -1,7 +1,7 @@
 (ns school)
 
 (defn grade [db level]
-  (get db level []))
+  (db level []))
 
 (defn add [db name level]
   (let [students (grade db level)]
